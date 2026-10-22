@@ -9,7 +9,7 @@ This document is a briefing for anyone (human or model) helping to plan or desig
 AINCRAD is a macOS desktop layer inspired by Sword Art Online's menus. A gesture or hotkey summons a radial system menu (the "launcher"), a themed top bar and dock ("the SAO shell") sit on screen, and a set of companion apps (a browser and a file manager) wear the same theme. The goal is that the whole desktop feels like one world. Everything is themable: colours, sizes, corner style, animation timings and sounds are all data.
 
 Design values that come up repeatedly:
-- **One theme, many windows.** AINCRAD owns the theme; companions read it and re-skin live.
+- **One theme authority, many windows.** AINCRAD Prism owns theme files and assignments; AINCRAD and its companions read them and re-skin live.
 - **No servers, no accounts.** Local files, macOS distributed notifications, and UserDefaults. No network dependency for the core features.
 - **No extra permissions for the link.** The apps talk through files and notifications, not Accessibility or Full Disk Access (except where a feature genuinely needs it, such as the launcher's app menus and gestures).
 - **Private by default.** Private browser windows are never shared with AINCRAD. Downloads announce only file names.
@@ -27,9 +27,11 @@ All repos live under the GitHub account `djag1337`. All are currently private.
 | **AINCRAD** | `~/Documents/AINCRAD` | Swift, AppKit, SwiftUI (settings), XcodeGen | The core launcher, shell, settings, widgets, scripting |
 | **AINCRAD-Browser** | `~/Documents/AINCRAD-Browser` | Swift, AppKit, WebKit | Native browser that wears the theme |
 | **AINCRAD-Discovery** | `~/Documents/AINCRAD-Discovery` | Swift, AppKit, XcodeGen | Finder replacement in the same style |
+| **AINCRAD-Prism** | `~/Documents/AINCRAD-Prism` | Swift, AppKit, SwiftUI, XcodeGen | The theme workshop: the only app that writes themes and theme assignments (local git repo; not yet on GitHub) |
+| **AINCRAD Prism** | `~/Documents/AINCRAD-Prism` | Swift, SwiftUI | Sole theme workshop and assignment authority |
 | **AINCRAD-catalog** | (GitHub) | JSON + assets | Community themes and extensions, read by the Browse pane |
 
-Installed apps live in `/Applications` as `AINCRAD.app`, `AINCRAD Browser.app` and `AINCRAD Discovery.app`.
+Installed apps live in `/Applications` as `AINCRAD.app`, `AINCRAD Browser.app`, `AINCRAD Discovery.app` and `AINCRAD Prism.app`.
 
 ---
 
@@ -39,8 +41,8 @@ Installed apps live in `/Applications` as `AINCRAD.app`, `AINCRAD Browser.app` a
 - **Launcher:** a radial, column-based menu (`Launcher/MenuView.swift`, `LauncherController.swift`). Opened by a hotkey (default ⌥` in settings) or a mouse-button gesture. Items come from `menu.json`: favourites, apps by category, places, web links, system, plus a "Web" circle and a "System" circle.
 - **Shell:** a themed top bar and an SAO dock (`Shell/ShellController.swift`, `ShellDockView.swift`). The dock shows pinned apps, a divider, then running apps; it supports folder stacks, running dots, labels on hover, drag to reorder and drop to pin. It can replace Apple's Dock and menu bar, or show alongside them.
 - **App menus:** right-click or click a dock app for its menus, built from Accessibility (`Shell/AppMenuPanel.swift`, `AXMenus`).
-- **Settings:** a SwiftUI window with tabs grouped as Launcher (General, Menu, Themes, Widgets), Extend (Extensions, Browse, Quick Commands), Ecosystem (Browser, Discovery) and About (`Settings/SettingsWindow.swift`).
-- **Themes:** `Config/Theme.swift`. A theme has colours, font, geometry (sizes), effects, animation timings and sounds. Themes are JSON files in `~/Library/Application Support/AINCRAD/themes/`. A "Copy sizes to…" action carries the numbers between themes and leaves the colours alone.
+- **Settings:** a SwiftUI window with tabs grouped as Launcher (General, Menu, Widgets), Extend (Extensions, Browse, Quick Commands), Ecosystem (Browser, Discovery) and About (`Settings/SettingsWindow.swift`). Theme editing is intentionally exclusive to Prism.
+- **Themes:** `Config/Theme.swift`. A theme has colours, font, geometry (sizes), effects, animation timings and sounds. Themes are JSON files in `~/Library/Application Support/AINCRAD/themes/`. AINCRAD no longer edits themes: its Themes tab and status-menu theme picker were removed, and **AINCRAD Prism** owns all theme changes (see the Prism section below). AINCRAD's General › Size and corners settings scale and reshape the launcher on top of the chosen theme, and Discovery applies the same two settings.
 - **Widgets:** desktop widgets (clock, Claude chat, quests, HUD bits) managed by `Widgets/WidgetManager.swift`. A widget studio lets you lay them out.
 - **Productivity ("Command Center"):** clipboard history, captures, notes pad, reminders, quick commands, workspaces (`Productivity/`).
 - **Quick commands and items:** user-defined items with optional global shortcuts (`Input/ItemShortcuts.swift`). Shortcuts that clash with Discovery or Browser keys show a warning in the menu editor.
@@ -65,6 +67,16 @@ Installed apps live in `/Applications` as `AINCRAD.app`, `AINCRAD Browser.app` a
 - Settings › Discovery mirrors Discovery's own preferences (same keys, same notification).
 
 ---
+
+## 3b. AINCRAD Prism (the theme workshop)
+
+- Native macOS app for creating, editing, duplicating, deleting, importing and exporting themes, and for assigning them.
+- **Sole write authority.** AINCRAD, the browser and Discovery only read theme files and the assignments. Prism writes them.
+- **Assignments:** "Use across AINCRAD" sets the global theme (AINCRAD and Discovery follow it); "Browser follows AINCRAD" or "Use only in Browser" set the browser's choice.
+- **Safety:** a timestamped backup before every save, assignment or delete; a one-off Migration Backup snapshot of all themes and assignments; existing JSON fields in assignment files are preserved.
+- **Copy sizes to…:** copies this theme's sizes and other numbers into other themes, leaving their colours, names, fonts and sounds alone. Needs a saved theme (the menu is disabled while there are unsaved edits).
+- Announces changes with `com.djag.aincrad.themeChanged` (and `com.djag.aincrad.browser.prefsChanged` for browser assignments); running apps repaint live.
+- Source: `~/Documents/AINCRAD-Prism` (XcodeGen; scheme `AINCRADPrism`). Integration contract: `docs/INTEGRATION.md` in that repo.
 
 ## 4. AINCRAD-Browser (the companion browser)
 
@@ -112,7 +124,7 @@ This is the most important section for design work. Anything that crosses an app
 |---|---|---|---|
 | Settings | `~/Library/Application Support/AINCRAD/settings.json` | AINCRAD | AINCRAD, Discovery (theme only) |
 | Menu | `~/Library/Application Support/AINCRAD/menu.json` | AINCRAD | AINCRAD |
-| Themes | `~/Library/Application Support/AINCRAD/themes/*.json` | AINCRAD (and the catalog) | AINCRAD, Discovery, Browser |
+| Themes | `~/Library/Application Support/AINCRAD/themes/*.json` | AINCRAD Prism (catalog supplies imports) | AINCRAD, Discovery, Browser |
 | Browser link | `~/Library/Application Support/AINCRAD Browser/link.json` | Browser | AINCRAD |
 | Browser prefs | `~/Library/Application Support/AINCRAD Browser/preferences.json` | Browser | Browser (and mirrored in AINCRAD's Browser pane) |
 | Discovery prefs | `com.djag.aincrad.discovery` preferences domain (UserDefaults) | Discovery, and AINCRAD via CFPreferences | both |
@@ -135,6 +147,9 @@ This is the most important section for design work. Anything that crosses an app
 `prefs.startFolder`, `prefs.startView`, `prefs.undoLimit`, `prefs.showHidden`, `prefs.reopenWindows`, `prefs.confirmTrash`, `prefs.showFreeSpace`, `prefs.showSearchLocations`, `prefs.showTrashInSidebar`, `prefs.typeToSelect`, `prefs.browserChrome`, `prefs.pinEdges`, plus internal state (`prefs.savedFolders`, `prefs.favoritePaths`, `prefs.lastFolder`). Keep the defaults identical on both sides.
 
 ### Themes and sizes
+
+- Prism writes `themes/<id>.json` and the `theme` key in `settings.json` (global) and in the browser's `preferences.json`. Everything else reads them.
+- Discovery reads the global `theme` from `settings.json`, and also `uiScale` and `cornerStyle` (from General › Size and corners), so the same sizes apply in the launcher and in Discovery.
 - The launcher, Browser and Discovery all read the same theme JSON. Colours, fonts and sizes come from it. The launcher applies "size and corner" overrides on top of the saved theme without changing the file.
 
 ---

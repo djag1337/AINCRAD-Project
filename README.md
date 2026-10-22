@@ -11,7 +11,8 @@ This repository is the front door. It doesn't hold the code. It tells you what e
 | Repo | What it is | Start here if you want to… |
 | --- | --- | --- |
 | [**AINCRAD**](https://github.com/djag1337/AINCRAD) | The core app: a SAO-style system menu, quick commands, settings, notes and app access | …understand the whole idea |
-| [**AINCRAD-catalog**](https://github.com/djag1337/AINCRAD-catalog) | Themes, skins and Scratch-style block extensions | …make it look like something else |
+| **AINCRAD Prism** | Native theme workshop and assignment authority | …create or change the world's look |
+| [**AINCRAD-catalog**](https://github.com/djag1337/AINCRAD-catalog) | Themes, skins and Scratch-style block extensions | …find another look |
 | [**AINCRAD-Browser**](https://github.com/djag1337/AINCRAD-Browser) | A native browser that wears the active AINCRAD theme | …browse the web inside the world |
 | [**AINCRAD-Discovery**](https://github.com/djag1337/AINCRAD-Discovery) | A Finder replacement in the same style: list and column views, undo, search, a sidebar you can edit | …manage files inside the world |
 
@@ -26,7 +27,7 @@ Each one installs on its own. Together they share a theme file, and they use the
 
 ## How the pieces talk
 
-- **One theme, many windows.** AINCRAD owns the theme. The browser and Discovery read it and re-skin when it changes, so switching themes once changes the whole desktop.
+- **One authority, many windows.** AINCRAD Prism owns theme creation and assignment. AINCRAD, the browser and Discovery consume the shared files read-only and re-skin when Prism announces a change.
 - **Shared links, not shared secrets.** The apps find each other through small link files and macOS notifications. No accounts, no servers, and no extra macOS permissions for the link itself.
 - **Folders go where you expect.** Folder actions in the launcher open in Discovery when it's installed (you can turn that off in settings). Downloads and pages open in the browser when it's installed.
 - **Your data stays on your Mac.** Nothing in the link sends your files or browsing history anywhere. Private browser windows are never shared.
