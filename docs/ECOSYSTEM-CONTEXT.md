@@ -27,7 +27,7 @@ All repos live under the GitHub account `djag1337`. All are currently private.
 | **AINCRAD** | `~/Documents/AINCRAD` | Swift, AppKit, SwiftUI (settings), XcodeGen | The core launcher, shell, settings, widgets, scripting |
 | **AINCRAD-Browser** | `~/Documents/AINCRAD-Browser` | Swift, AppKit, WebKit | Native browser that wears the theme |
 | **AINCRAD-Discovery** | `~/Documents/AINCRAD-Discovery` | Swift, AppKit, XcodeGen | Finder replacement in the same style |
-| **AINCRAD-Prism** | `~/Documents/AINCRAD-Prism` | Swift, AppKit, SwiftUI, XcodeGen | The theme workshop: the only app that writes themes and theme assignments (local git repo; not yet on GitHub) |
+| **AINCRAD-Prism** | `~/Documents/AINCRAD-Prism` | Swift, AppKit, SwiftUI, XcodeGen | The theme workshop: the only app that writes themes and theme assignments (github.com/djag1337/AINCRAD-Prism, private) |
 | **AINCRAD Prism** | `~/Documents/AINCRAD-Prism` | Swift, SwiftUI | Sole theme workshop and assignment authority |
 | **AINCRAD-catalog** | (GitHub) | JSON + assets | Community themes and extensions, read by the Browse pane |
 

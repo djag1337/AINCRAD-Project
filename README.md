@@ -13,6 +13,7 @@ This repository is the front door. It doesn't hold the code. It tells you what e
 | [**AINCRAD**](https://github.com/djag1337/AINCRAD) | The core app: a SAO-style system menu, quick commands, settings, notes and app access | …understand the whole idea |
 | **AINCRAD Prism** | Native theme workshop and assignment authority | …create or change the world's look |
 | [**AINCRAD-catalog**](https://github.com/djag1337/AINCRAD-catalog) | Themes, skins and Scratch-style block extensions | …find another look |
+| [**AINCRAD-Prism**](https://github.com/djag1337/AINCRAD-Prism) | The theme workshop: creates, edits and assigns every theme | …design a theme or pick the active one |
 | [**AINCRAD-Browser**](https://github.com/djag1337/AINCRAD-Browser) | A native browser that wears the active AINCRAD theme | …browse the web inside the world |
 | [**AINCRAD-Discovery**](https://github.com/djag1337/AINCRAD-Discovery) | A Finder replacement in the same style: list and column views, undo, search, a sidebar you can edit | …manage files inside the world |
 
